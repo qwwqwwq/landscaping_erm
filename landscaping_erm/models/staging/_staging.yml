@@ -1,0 +1,151 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: Cleaned customer master records from GEM POS system
+    columns:
+      - name: customer_id
+        description: Unique customer identifier
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_items
+    description: Inventory items (products) sold by the business
+    columns:
+      - name: item_id
+        description: Unique item/inventory number
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_orders
+    description: Sales orders with payment breakdowns
+    columns:
+      - name: invoice_number
+        description: Invoice number (primary identifier for orders)
+        tests:
+          - not_null
+
+  - name: stg_invoice_details
+    description: Finalized invoice line items with pricing and quantities
+    columns:
+      - name: invoice_number
+        description: Invoice number linking to orders
+        tests:
+          - not_null
+
+  - name: stg_items_sold
+    description: Invoice payment summary records (1.2M rows) — one per payment event
+    columns:
+      - name: items_sold_id
+        description: Unique record identifier
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_pending_invoices
+    description: Pending/completed invoice headers (1.2M rows)
+    columns:
+      - name: invoice_number
+        description: Invoice number
+        tests:
+          - not_null
+
+  - name: stg_pending_invoice_details
+    description: Pending invoice line items
+    columns:
+      - name: invoice_number
+        description: Invoice number linking to pending invoices
+        tests:
+          - not_null
+
+  - name: stg_ar_transactions
+    description: Accounts receivable ledger entries (14 duplicate transaction_ids in source data)
+    columns:
+      - name: transaction_id
+        description: AR transaction number (not strictly unique in source — 14 dupes exist)
+
+  - name: stg_daily_sales
+    description: Daily sales summaries with hourly breakdowns
+    columns:
+      - name: sales_date
+        description: Date of the daily summary
+        tests:
+          - not_null
+
+  - name: stg_categories
+    description: Product categories with pricing levels and markup percentages
+    columns:
+      - name: category_id
+        description: Unique category identifier
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_checks
+    description: Check and cash payments received
+    columns:
+      - name: invoice_number
+        description: Associated invoice number
+        tests:
+          - not_null
+
+  - name: stg_deposits
+    description: Customer deposits and prepayments by payment method
+    columns:
+      - name: invoice_number
+        description: Associated invoice number
+        tests:
+          - not_null
+
+  - name: stg_returns
+    description: Product returns with reason codes
+    columns:
+      - name: invoice_number
+        description: Invoice number for the return
+        tests:
+          - not_null
+
+  - name: stg_vendors
+    description: Supplier/vendor master records
+    columns:
+      - name: vendor_id
+        description: Unique vendor identifier
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_employees
+    description: Employee/salesperson records (passwords excluded)
+    columns:
+      - name: employee_code
+        description: 3-letter employee code (e.g. PRW, DDC)
+        tests:
+          - not_null
+
+  - name: stg_hours
+    description: Employee time clock entries
+    columns:
+      - name: employee_code
+        description: Employee code linking to stg_employees
+        tests:
+          - not_null
+
+  - name: stg_departments
+    description: Department lookup table
+    columns:
+      - name: department_id
+        description: Unique department identifier
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_gift_certificates
+    description: Gift certificate records with balances
+    columns:
+      - name: gift_certificate_id
+        description: Unique gift certificate system ID
+        tests:
+          - unique
+          - not_null

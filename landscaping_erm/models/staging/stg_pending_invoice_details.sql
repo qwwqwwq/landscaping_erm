@@ -1,0 +1,60 @@
+with source as (
+    select * from {{ source('erm_data', 'dbo_PINVDET') }}
+),
+
+cleaned as (
+    select
+        pnd_id as line_id,
+        pnd_invno as item_id,
+        pnd_invoiceno as invoice_number,
+        pnd_invoiceitem as line_number,
+        trim(pnd_description) as description,
+        trim(pnd_barcode) as barcode,
+        pnd_quantity as quantity,
+        pnd_price as unit_price,
+        pnd_itemcost as item_cost,
+        pnd_cost as cost,
+        pnd_landedcost as landed_cost,
+        pnd_averagecost as average_cost,
+        pnd_taxamount as tax_amount,
+        pnd_disc as discount_pct,
+        pnd_comm as commission_amount,
+        pnd_oprice as original_price,
+        pnd_rprice as retail_price,
+        pnd_couponamount as coupon_amount,
+        pnd_couponsavings as coupon_savings,
+        pnd_referenceprice as reference_price,
+        trim(pnd_um) as unit_of_measure,
+        pnd_dquan as default_quantity,
+        pnd_department as department_id,
+        pnd_categoryid as category_id,
+        pnd_custid as customer_id,
+        pnd_stk_id as stock_id,
+        pnd_vi_id as vendor_invoice_id,
+        trim(pnd_sales1) as salesperson_1_code,
+        trim(pnd_sales2) as salesperson_2_code,
+        upper(trim(pnd_status)) as line_status,
+        pnd_held as quantity_held,
+        pnd_bord as quantity_backordered,
+        pnd_quan as stock_quantity,
+        pnd_quantityheldfromstock as quantity_held_from_stock,
+        pnd_specialquantity as special_quantity,
+        pnd_unitsper as units_per,
+        trim(pnd_notation) as notation,
+        trim(pnd_linenote) as line_note,
+        trim(pnd_returncode) as return_code,
+        trim(pnd_promocode) as promo_code,
+        pnd_retcode as return_code_id,
+        pnd_oinvoice as original_invoice_number,
+        pnd_sn_id as sales_number_id,
+        pnd_pendinginvoiceno as pending_invoice_number,
+        {{ clarion_date('pnd_date') }} as line_date,
+        {{ clarion_time('pnd_time') }} as line_time,
+        {{ clarion_date('pnd_pendingcreatedate') }} as pending_create_date,
+        {{ clarion_date('pnd_pendingdatedue') }} as pending_date_due,
+        {{ clarion_date('pnd_finaldate') }} as final_date
+
+    from source
+)
+
+select * from cleaned
