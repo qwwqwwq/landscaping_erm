@@ -1,4 +1,6 @@
 csv_output/*
+reports/*
+.DS_Store
 logs/*
 *.bak
 parquet_output/*

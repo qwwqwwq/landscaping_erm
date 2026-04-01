@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: mart_contractor_attrition
+    description: >
+      Contractor attrition report. Shows former contractor customers
+      who were active within a lookback window but have not ordered
+      recently. Includes four attrition flags:
+        - 10yr active / 1yr inactive
+        - 5yr active / 6mo inactive
+        - 5yr active / 1yr inactive
+        - 5yr active / 2yr inactive
+      Ordered by lifetime revenue to prioritize high-value win-backs.
+    columns:
+      - name: customer_id
+        description: Unique customer identifier
+        tests:
+          - unique
+          - not_null
+      - name: best_phone_number
+        description: Best available phone number for outreach (cell > phone_1 > phone_2)
+      - name: attrition_10yr_inactive_1yr
+        description: "True if customer was active in last 10 years but hasn't ordered in 1 year"
+      - name: attrition_5yr_inactive_6mo
+        description: "True if customer was active in last 5 years but hasn't ordered in 6 months"
+      - name: attrition_5yr_inactive_1yr
+        description: "True if customer was active in last 5 years but hasn't ordered in 1 year"
+      - name: attrition_5yr_inactive_2yr
+        description: "True if customer was active in last 5 years but hasn't ordered in 2 years"

@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: int_customer_classification
+    description: >
+      Classifies customers as Contractor, Retail, or Inactive.
+      Uses customer_type, credit_limit (house account proxy),
+      payment_terms, and name pattern matching (LLC, Inc, Land,
+      Garden, Services, Construction, etc.) per business rules.
+    columns:
+      - name: customer_id
+        description: Unique customer identifier
+        tests:
+          - unique
+          - not_null
+      - name: customer_segment
+        description: "Contractor, Retail, or Inactive"
+        tests:
+          - accepted_values:
+              values: ['Contractor', 'Retail', 'Inactive']
+
+  - name: int_customer_order_summary
+    description: >
+      Combines customer classification with aggregated order history.
+      Includes first/last order dates, lifetime revenue, and
+      precomputed date cutoffs for attrition analysis.
+    columns:
+      - name: customer_id
+        description: Unique customer identifier
+        tests:
+          - unique
+          - not_null
